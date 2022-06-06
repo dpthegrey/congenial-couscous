@@ -2,28 +2,28 @@ let shop = document.getElementById("shop");
 
 let shopItemsData = [
   {
-    id: 1,
+    id: "aeou1",
     name: "Casual Shirt",
     price: 45,
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     img: "images/img-1.jpg",
   },
   {
-    id: 2,
+    id: "aeou2",
     name: "Office Shirt",
     price: 100,
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     img: "images/img-2.jpg",
   },
   {
-    id: 3,
+    id: "aeou3",
     name: "T Shirt",
     price: 25,
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     img: "images/img-3.jpg",
   },
   {
-    id: 4,
+    id: "aeou4",
     name: "Men's Suit",
     price: 300,
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing.",
@@ -71,7 +71,8 @@ let increment = (id) => {
     basketSearch.quantity += 1;
   }
 
-  console.log(basket);
+  //   console.log(basket);
+  update(selectedItem.id);
 };
 
 let decrement = (id) => {
@@ -81,8 +82,15 @@ let decrement = (id) => {
   if (basketSearch.quantity === 0) {
     return;
   } else {
-    basketSearch.quantity -= 1; 
+    basketSearch.quantity -= 1;
   }
 
-  console.log(basket);
+  //   console.log(basket);
+  update(selectedItem.id);
+};
+
+let update = (id) => {
+  let basketSearch = basket.find((item) => item.id === id);
+  console.log(basketSearch.quantity);
+  document.getElementById(id).innerHTML = basketSearch.quantity;
 };

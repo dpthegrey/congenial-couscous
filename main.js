@@ -73,3 +73,16 @@ let increment = (id) => {
 
   console.log(basket);
 };
+
+let decrement = (id) => {
+  let selectedItem = id;
+  let basketSearch = basket.find((item) => item.id === selectedItem.id);
+
+  if (basketSearch.quantity === 0) {
+    return;
+  } else {
+    basketSearch.quantity -= 1; 
+  }
+
+  console.log(basket);
+};

@@ -73,23 +73,23 @@ let increment = (id) => {
   } else {
     basketSearch.quantity += 1;
   }
-  localStorage.setItem("data", JSON.stringify(basket));
   //   console.log(basket);
   update(selectedItem.id);
+  localStorage.setItem("data", JSON.stringify(basket));
 };
 
 let decrement = (id) => {
   let selectedItem = id;
   let basketSearch = basket.find((item) => item.id === selectedItem.id);
 
-  if (basketSearch.quantity === 0) {
+  if (basketSearch === undefined || basketSearch.quantity === 0) {
     return;
   } else {
     basketSearch.quantity -= 1;
   }
-  localStorage.setItem("data", JSON.stringify(basket));
-  //   console.log(basket);
   update(selectedItem.id);
+  basket = basket.filter((item) => item.quantity > 0); // remove item from basket if quantity is 0
+  localStorage.setItem("data", JSON.stringify(basket));
 };
 
 let update = (id) => {

@@ -32,7 +32,7 @@ let generateCartItems = () => {
                 <p>${searchItemID.name}</p>
                 <p class="cart-item-price">$ ${searchItemID.price}</p>
               </h4>
-              <i class="bi bi-x-lg"></i>
+              <i onclick="removeItem(${id})" class="bi bi-x-lg"></i>
             </div>
 
             <div class="buttons">
@@ -76,6 +76,7 @@ let increment = (id) => {
     basketSearch.quantity += 1;
   }
 
+  generateCartItems();
   // update the quantity of the item
   update(selectedItem.id);
   // update the localStorage with the new basket
@@ -111,4 +112,14 @@ let update = (id) => {
   // find the item in the basket
   document.getElementById(id).innerHTML = basketSearch.quantity;
   calculation();
+};
+
+let removeItem = (id) => {
+  let selectedItem = id;
+  // console.log(selectedItem.id);
+  basket = basket.filter((x) => x.id !== selectedItem.id);
+  // re-render all cards on selecting X button
+  generateCartItems();
+  // update the localStorage with the new basket
+  localStorage.setItem("data", JSON.stringify(basket));
 };

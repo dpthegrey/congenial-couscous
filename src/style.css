@@ -18,19 +18,19 @@ i {
 
 a {
   text-decoration: none;
-  color: #fff;
+  color: white;
 }
 
 /**
-  * ! Navbar Styles
-  **/
+* ! Navbar STyles are here
+**/
 
 .navbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: #03071e;
-  color: #fff;
+  background-color: #212529;
+  color: white;
   padding: 25px 60px;
   margin-bottom: 30px;
 }
@@ -38,26 +38,26 @@ a {
 .cart {
   position: relative;
   background-color: #fff;
-  color: #03071e;
+  color: #212529;
   font-size: 30px;
   padding: 5px;
   border-radius: 4px;
 }
 
-.cart-amount {
+.cartAmount {
   position: absolute;
   top: -15px;
   right: -10px;
   font-size: 16px;
   background-color: red;
-  color: #fff;
+  color: white;
   padding: 3px;
   border-radius: 3px;
 }
 
 /**
-  * ! Shop items styles are here
-  **/
+* ! Shop items styles are here
+**/
 
 .shop {
   display: grid;
@@ -80,7 +80,7 @@ a {
 }
 
 .item {
-  border: 2px solid #03071e;
+  border: 2px solid #212529;
   border-radius: 4px;
 }
 .item img {
@@ -118,19 +118,19 @@ a {
 }
 
 /**
-  * ! style rules for label and some buttons
-  **/
+* ! style rules for label and some buttons
+**/
 
 .text-center {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.home-btn,
+.HomeBtn,
 .checkout,
-.removell {
-  background-color: #03071e;
-  color: #fff;
+.removeAll {
+  background-color: #212529;
+  color: white;
   border: none;
   padding: 6px;
   border-radius: 3px;
@@ -150,8 +150,8 @@ a {
 }
 
 /**
-  * ! style rules for shopping-cart
-  **/
+* ! style rules for shopping-cart
+**/
 
 .shopping-cart {
   display: grid;
@@ -161,11 +161,11 @@ a {
 }
 
 /**
-  * ! style rules for cart-item
-  **/
+* ! style rules for cart-item
+**/
 
 .cart-item {
-  border: 2px solid #03071e;
+  border: 2px solid #212529;
   border-radius: 5px;
   display: flex;
 }
@@ -175,17 +175,18 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* border: 2px solid red; */
 }
 
-.title-price{
+.title-price {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.cart-item-price{
-  background-color: #03071e;
-  color: #fff;
+.cart-item-price {
+  background-color: #212529;
+  color: white;
   border-radius: 4px;
   padding: 3px 6px;
 }

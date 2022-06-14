@@ -1,125 +1,181 @@
-let label = document.getElementById("label"); // get the label
-let shoppingCart = document.getElementById("shopping-cart");
+let ShoppingCart = document.getElementById("shopping-cart");
+let label = document.getElementById("label");
 
-// parse the basket from localStorage
+/**
+ * ! Basket to hold all the selected items
+ * ? the getItem part is retrieving data from the local storage
+ * ? if local storage is blank, basket becomes an empty array
+ */
+
 let basket = JSON.parse(localStorage.getItem("data")) || [];
 
-// calculation() will calculate the total price of the cart
+/**
+ * ! To calculate total amount of selected Items
+ */
+
 let calculation = () => {
-  let cartIcon = document.getElementById("cart-amount");
-  cartIcon.innerHTML = basket
-    .map((item) => item.quantity)
-    .reduce((a, b) => a + b, 0);
+  let cartIcon = document.getElementById("cartAmount");
+  cartIcon.innerHTML = basket.map((x) => x.item).reduce((x, y) => x + y, 0);
 };
 
 calculation();
 
-// generateCartItems() will generate the cart items
+/**
+ * ! Generates the Cart Page with product cards composed of
+ * ! images, title, price, buttons, & Total price
+ * ? When basket is blank -> show's Cart is Empty
+ */
+
 let generateCartItems = () => {
   if (basket.length !== 0) {
-    // if basket is not empty
-    return (shoppingCart.innerHTML = basket
-      .map((item) => {
-        // map each item in basket to a string
-        let { id, quantity, name, img, price } = item; // destructuring
-        // get the id and quantity of each item
-        let searchItemID = shopItemsData.find((item) => item.id === id) || [];
-        return `<div class="cart-item">
-          <img width="100" src=${searchItemID.img} alt="" />
-          <div class="details">
-            <div class="title-price-x">
-              <h4 class="title-price">
-                <p>${searchItemID.name}</p>
-                <p class="cart-item-price">$ ${searchItemID.price}</p>
-              </h4>
-              <i onclick="removeItem(${id})" class="bi bi-x-lg"></i>
-            </div>
+    return (ShoppingCart.innerHTML = basket
+      .map((x) => {
+        let { id, item } = x;
+        let search = shopItemsData.find((x) => x.id === id) || [];
+        let { img, price, name } = search;
+        return `
+      <div class="cart-item">
+        <img width="100" src=${img} alt="" />
 
+        <div class="details">
+        
+          <div class="title-price-x">
+            <h4 class="title-price">
+              <p>${name}</p>
+              <p class="cart-item-price">$ ${price}</p>
+            </h4>
+            <i onclick="removeItem(${id})" class="bi bi-x-lg"></i>
+          </div>
+
+          <div class="cart-buttons">
             <div class="buttons">
               <i onclick="decrement(${id})" class="bi bi-dash-lg"></i>
-              <div id=${id} class="quantity">${quantity}</div>
+              <div id=${id} class="quantity">${item}</div>
               <i onclick="increment(${id})" class="bi bi-plus-lg"></i>
             </div>
-
-            <h3>$ ${quantity * searchItemID.price}</h3>  
           </div>
-        </div>`;
+
+          <h3>$ ${item * price}</h3>
+        
+        </div>
+      </div>
+      `;
       })
       .join(""));
   } else {
-    // if basket is empty
-    shoppingCart.innerHTML = ``;
-    label.innerHTML = html`
-      <h2>Your cart is empty</h2>
-      <a href="index.html">
-        <button class="home-btn">Back to home</button>
-      </a>
+    ShoppingCart.innerHTML = "";
+    label.innerHTML = `
+    <h2>Cart is Empty</h2>
+    <a href="index.html">
+      <button class="HomeBtn">Back to Home</button>
+    </a>
     `;
   }
 };
 
 generateCartItems();
 
-// increment() will increment the quantity of the item
-let increment = (id) => {
-  let selectedItem = id; // get the id of the item
-  let basketSearch = basket.find((item) => item.id === selectedItem.id); // find the item in the basket
+/**
+ * ! used to increase the selected product item quantity by 1
+ */
 
-  if (basketSearch === undefined) {
-    // if the item is not in the basket
+let increment = (id) => {
+  let selectedItem = id;
+  let search = basket.find((x) => x.id === selectedItem.id);
+
+  if (search === undefined) {
     basket.push({
       id: selectedItem.id,
-      quantity: 1,
+      item: 1,
     });
   } else {
-    // if the item is in the basket
-    basketSearch.quantity += 1;
+    search.item += 1;
   }
 
   generateCartItems();
-  // update the quantity of the item
   update(selectedItem.id);
-  // update the localStorage with the new basket
   localStorage.setItem("data", JSON.stringify(basket));
 };
 
-// decrement() will decrement the quantity of the item
+/**
+ * ! used to decrease the selected product item quantity by 1
+ */
+
 let decrement = (id) => {
-  let selectedItem = id; // get the id of the item
-  let basketSearch = basket.find((item) => item.id === selectedItem.id); // find the item in the basket
+  let selectedItem = id;
+  let search = basket.find((x) => x.id === selectedItem.id);
 
-  if (basketSearch === undefined || basketSearch.quantity === 0) {
-    // if the item is not in the basket or the quantity is 0
-    return;
-  } else {
-    // if the item is in the basket and the quantity is not 0
-    basketSearch.quantity -= 1; // decrement the quantity
+  if (search === undefined) return;
+  else if (search.item === 0) return;
+  else {
+    search.item -= 1;
   }
-  // update the quantity of the item
+
   update(selectedItem.id);
-  // remove item from basket if quantity is 0
-  basket = basket.filter((item) => item.quantity > 0);
+  basket = basket.filter((x) => x.item !== 0);
   generateCartItems();
-  // update the localStorage with the new basket
   localStorage.setItem("data", JSON.stringify(basket));
 };
 
-// update() will update the quantity of the item
+/**
+ * ! To update the digits of picked items on each item card
+ */
+
 let update = (id) => {
-  // get the id of the item
-  let basketSearch = basket.find((item) => item.id === id);
-  //   console.log(basketSearch);
-  // find the item in the basket
-  document.getElementById(id).innerHTML = basketSearch.quantity;
+  let search = basket.find((x) => x.id === id);
+  document.getElementById(id).innerHTML = search.item;
   calculation();
+  TotalAmount();
 };
+
+/**
+ * ! Used to remove 1 selected product card from basket
+ * ! using the X [cross] button
+ */
 
 let removeItem = (id) => {
   let selectedItem = id;
-  // console.log(selectedItem.id);
   basket = basket.filter((x) => x.id !== selectedItem.id);
-  // re-render all cards on selecting X button
+  calculation();
   generateCartItems();
-  // update the localStorage with the new basket
+  TotalAmount();
+  localStorage.setItem("data", JSON.stringify(basket));
+};
+
+/**
+ * ! Used to calculate total amount of the selected Products
+ * ! with specific quantity
+ * ? When basket is blank, it will show nothing
+ */
+
+let TotalAmount = () => {
+  if (basket.length !== 0) {
+    console.log(basket);
+    let amount = basket
+      .map((x) => {
+        let { id, item } = x;
+        let filterData = shopItemsData.find((x) => x.id === id);
+        return filterData.price * item;
+      })
+      .reduce((x, y) => x + y, 0);
+    console.log(amount);
+    return (label.innerHTML = `
+    <h2>Total Bill : $ ${amount}</h2>
+    <button class="checkout">Checkout</button>
+    <button onclick="clearCart()" class="removeAll">Clear Cart</button>
+    `);
+  } else return;
+};
+
+TotalAmount();
+
+/**
+ * ! Used to clear cart, and remove everything from local storage
+ */
+
+let clearCart = () => {
+  basket = [];
+  generateCartItems();
+  calculation();
   localStorage.setItem("data", JSON.stringify(basket));
 };
